@@ -1,0 +1,65 @@
+import requests
+
+def get_weather(city, api_key):
+    # URL to fetch weather data from OpenWeatherMap
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    
+    # Construct complete URL
+    complete_url = base_url + "q=" + city + "&appid=" + api_key + "&units=metric"
+    
+    # Send GET request
+    response = requests.get(complete_url)
+    
+    # Parse the JSON response
+    data = response.json()
+
+    # Check if the city is valid
+    if data["cod"] != "404":
+        # Extract main weather data
+        main_data = data["main"]
+        weather_data = data["weather"][0]
+        
+        # Extract temperature, pressure, and humidity
+        temperature = main_data["temp"]
+        pressure = main_data["pressure"]
+        humidity = main_data["humidity"]
+        
+        # Extract weather description
+        weather_description = weather_data["description"]
+        
+        # Output the weather information
+        print(f"Weather in {city}:")
+        print(f"Temperature: {temperature}°C")
+        print(f"Pressure: {pressure} hPa")
+        print(f"Humidity: {humidity}%")
+        print(f"Description: {weather_description.capitalize()}")
+    else:
+        print("City not found!")
+
+# Main program
+if __name__ == "__main__":
+    city = input("Enter the city name: ")
+    api_key = "your_api_key_here"  # Replace with your actual API key
+    get_weather(city, api_key)
+
+
+output:
+
+Copy code
+Enter the city name: London
+Weather in London:
+Temperature: 15.3°C
+Pressure: 1012 hPa
+Humidity: 82%
+Description: Clear sky
+For a city like New York, the output might look like this:
+
+
+
+Copy code
+Enter the city name: New York
+Weather in New York:
+Temperature: 12.7°C
+Pressure: 1010 hPa
+Humidity: 75%
+Description: Few clouds
